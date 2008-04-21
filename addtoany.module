@@ -24,7 +24,7 @@ function addtoany_link($type,$node=NULL, $teaser = FALSE) {
 	$string = 'share '. $node->type .' content';
  	drupal_add_css((drupal_get_path('module', 'addtoany') .'/addtoany.css'), $type = 'module', $media = 'all', $preprocess = TRUE);
 	$links = array();
-	 $output .= '<a name="a2a_dd" onmouseover="a2a_show_dropdown(this)" onmouseout="a2a_onMouseOut_delay()" href="http://www.addtoany.com/bookmark?linkname='.$node->title.'&amp;linkurl='.rawurlencode($link_url).'">
+	 $output .= '<a name="a2a_dd" onmouseover="a2a_show_dropdown(this)" onmouseout="a2a_onMouseOut_delay()" href="http://www.addtoany.com/bookmark?linkname='.rawurlencode($node->title).'&amp;linkurl='.rawurlencode($link_url).'">
 					<img src="http://www.addtoany.com/bookmark.gif" width="91" height="16" border="0" alt="Bookmark"/></a>
 					<script type="text/javascript">a2a_linkname="'.$node->title.'";a2a_linkurl="'.$link_url.'";</script>
 					<script type="text/javascript" src="http://www.addtoany.com/js.dropdown.js?type=page"></script>';
