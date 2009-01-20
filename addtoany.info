@@ -1,4 +1,4 @@
 ; $ID$
 name = AddToAny
-description = "Give your nodes the addToAny.com share button to let user share your content."
-
+description = "Helps readers share, save, bookmark, and email your posts and pages using any service, such as Delicious, Digg, Facebook, Twitter, and over 100 more using the <a href="http://www.addtoany.com/" target="_blank">AddToAny</a> widget."
+core = 6.x
