@@ -181,7 +181,7 @@ function _addtoany_create_script($node = NULL) {
 	else
 		$_addtoany_script .= '<script type="text/javascript">';
 		
-	$_addtoany_script .= 'a2a_linkname="'. addslashes($node->title) .'";a2a_linkurl="'. url('node/'. $node->nid ) .'";';
+	$_addtoany_script .= 'a2a_linkname="'. check_plain($node->title) .'";a2a_linkurl="'. url('node/'. $node->nid ) .'";';
 	
 	if ( ! $_addtoany_script_init) {
 		$_addtoany_script .= variable_get('addtoany_additional_js', '');
