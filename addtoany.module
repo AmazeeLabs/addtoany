@@ -40,13 +40,13 @@ function addtoany_menu($may_cache) {
   $items = array();
   
   if ($may_cache) {  
-	  $items['admin/settings/addtoany'] = array(
+	  $items[] = array(
 	  	'path'					=> 'admin/settings/addtoany',
 	    'title'            		=> t('AddToAny'),
 	    'description'      		=> t('Settings for your <a href="http://www.addtoany.com/" target="blank">AddToAny</a> Share/Save buttons.'),
 	    'callback'    			=> 'drupal_get_form',
 	    'callback arguments'   	=> array('addtoany_admin_settings'),
-	    'access' 				=> array('administer addtoany'),
+	    'access' 				=> user_access('administer addthis'),
 	  );
   }
 
@@ -107,7 +107,7 @@ function addtoany_admin_settings() {
     '#default_value' => variable_get('addtoany_custom_image', ''),
     '#description'   => t('URL to the button image of your choosing. Example: http://example.com/share.png'),
   );
-  $form['addtoany_button_settings']['addtoany_custom_image_attributes'] = array(
+  $form['addtoany_button_settings']['addtoany_image_attributes'] = array(
     '#type'          => 'textfield',
     '#title'         => t('Button image HTML attributes'),
     '#default_value' => variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
@@ -152,8 +152,15 @@ function addtoany_block($op = 'list', $delta = 0) {
     return $blocks;
   }
   else if ($op == 'view' && user_access('view addtoany')) {
+  	// Get node object
+	$nodeid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : FALSE;
+	if ($nodeid) {
+		$node = node_load($nodeid);
+	} else {
+		$node = NULL;
+	}
     $block['subject'] = t('AddToAny');
-    $block['content'] = _addtoany_create_button();
+    $block['content'] = _addtoany_create_button($node);
     return $block;
   }
 }
@@ -173,6 +180,14 @@ function _addtoany_create_script($node = NULL) {
 
 	// Drop-down disabled?
 	if(variable_get('addtoany_dropdown_disabled', '0')) return;
+	
+	if (is_object($node)) {
+	  	$link_name 	= check_plain($node->title);
+		$link_url 	= url('node/'. $node->nid, NULL, NULL, TRUE);
+	} else { // Front page
+		$link_name 	= check_plain(variable_get('site_name', 'Drupal'));
+	  	$link_url	= url('<front>', NULL, NULL, TRUE);
+	}
 
 	global $_addtoany_script, $_addtoany_script_init;
 	
@@ -181,7 +196,7 @@ function _addtoany_create_script($node = NULL) {
 	else
 		$_addtoany_script .= '<script type="text/javascript">';
 		
-	$_addtoany_script .= 'a2a_linkname="'. check_plain($node->title) .'";a2a_linkurl="'. url('node/'. $node->nid ) .'";';
+	$_addtoany_script .= 'a2a_linkname="'. $link_name .'";a2a_linkurl="'. $link_url .'";';
 	
 	if ( ! $_addtoany_script_init) {
 		$_addtoany_script .= variable_get('addtoany_additional_js', '');
@@ -212,6 +227,14 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
   _addtoany_create_script($node);
 
   $disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
+
+  if (is_object($node)) {
+  	$link_name 	= rawurlencode($node->title);
+	$link_url 	= rawurlencode(url('node/'. $node->nid, NULL, NULL, TRUE));
+  } else { // Front page
+	$link_name 	= rawurlencode(variable_get('site_name', 'Drupal'));
+  	$link_url	= rawurlencode(url('<front>', NULL, NULL, TRUE));
+  }
   
   $button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
   
@@ -228,11 +251,11 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
   }
      
   return ( sprintf('
-      <div class="addtoany"><a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s"><img src="%s"%s%s %s/></a></div>
+      <a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s"><img src="%s"%s%s %s/></a>
       ',
 	  $disable_dropdown ? '' : ' class="a2a_dd"',
-	  rawurlencode(url('node/'. $node->nid )),
-      rawurlencode($node->title),
+	  $link_url,
+      $link_name,
       $button_image,
       $button_width,
       $button_height,
