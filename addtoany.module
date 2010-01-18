@@ -104,7 +104,7 @@ function addtoany_block_list() {
 function addtoany_block_view($delta = 0) {
   $block = array();
   switch ($delta) {
-    case 'addtoany button':
+    case 'addtoany_button':
       if (user_access('view addtoany')){
         $block['subject'] = t('AddToAny');
         $block['content'] = _addtoany_create_button(menu_get_object());
