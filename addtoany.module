@@ -7,61 +7,56 @@
  */
 
 /**
- * Implementation of hook_perm().
+ * Implementation of hook_permission().
  */
-function addtoany_perm() {
-  $perms[] = 'administer addtoany';
-  $perms[] = 'view addtoany';
-  return $perms;
+function addtoany_permission() {
+  return array(
+    'administer addtoany' => array(
+      'title' => t('Administer addtoany'),
+      'description' => t(''),
+    ),
+    'view addtoany' => array(
+      'title' => t('View addtoany'),
+      'description' => t(''),
+    ),
+  );
 }
 
 /**
- * Implementation of hook_link().
+ * Implementation of hook_node_view().
  */
-function addtoany_link($type, $node = NULL, $teaser = FALSE) {
+function addtoany_node_view($node, $view_mode) { 
   $links = array();
-
   $types = variable_get('addtoany_nodetypes', array());
-
+  $teaser = $view_mode == 'teaser' ? TRUE : FALSE;
   $show  = (!empty($types[$node->type]) && 
            (($teaser && variable_get('addtoany_display_in_teasers', '1')!=0) ||
            (!$teaser && variable_get('addtoany_display_in_nodelink', '1')!=0)));
            
-  if ($type === 'node' && $show && user_access('view addtoany')) {
+  if ($show && user_access('view addtoany')) {
     $links['addtoany'] = array(
-        'title' => _addtoany_create_button($node, $teaser),
-        'html' => TRUE,
-      );
+      'title' => _addtoany_create_button($node, $teaser),
+      'html' => TRUE,
+    );
+    $node->content['links']['addtoany'] = array(
+      '#theme' => 'links',
+      '#links' => $links,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
   }
-
-  return $links;
+  
+  $show  = (!empty($types[$node->type]) && variable_get('addtoany_display_in_nodecont', '0'));
+  $weight = variable_get('addtoany_display_weight', 40);
+      
+  if ($show && user_access('view addtoany')) {
+    $node->content['addtoany'] = array(
+      '#value' => _addtoany_create_button($node, FALSE),
+      '#weight' => $weight,
+    );
+  }
+  
 }
 
-/**
- * Implementation of hook_nodeapi().
- */
-function addtoany_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  switch ($op) {
-    case 'view':
-      // Only show comments on the full non-teasered page
-      if (!$a3 && $a4) {
-        $types  = variable_get('addtoany_nodetypes', array());
-        
-        $show  = (!empty($types[$node->type]) && 
-                   variable_get('addtoany_display_in_nodecont', '0'));
-         
-        $weight = variable_get('addtoany_display_weight', 40);
-        
-        if ($show && user_access('view addtoany')) {
-          $node->content['addtoany'] = array(
-            '#value' => _addtoany_create_button($node, FALSE),
-            '#weight' => $weight,
-          );
-        }
-      }
-    break;
-  }
-}
 
 /**
  * Implementation of hook_menu().
@@ -82,29 +77,52 @@ function addtoany_menu() {
 }
 
 /**
- * Implementation of hook_block().
+ * Implements hook_block_info().
  */
-function addtoany_block($op = 'list', $delta = 0) {
-  if ($op == 'list') {
-    $blocks[0]['info'] = t('AddToAny button');
-    return $blocks;
-  }
-  else if ($op == 'view' && user_access('view addtoany')) {
-    $block['subject'] = t('AddToAny');
-    $block['content'] = _addtoany_create_button(menu_get_object());
-    return $block;
-  }
+function addtoany_block_info() {
+  $blocks['addtoany_button']['info'] = t('AddToAny button');
+  return $blocks;
 }
 
 /**
- * Implementation of hook_footer().  Would use drupal_add_js, but external scripts are not well supported
+ * Implements hook_block_list().
+ */
+function addtoany_block_list() {
+  $blocks['addtoany_button'] = array(
+    'info'       => t('AddToAny button'),
+    'status'     => TRUE,
+    'weight'     => 0,
+    'visibility' => 1,
+    'pages'      => '*',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function addtoany_block_view($delta = 0) {
+  $block = array();
+  switch ($delta) {
+    case 'addtoany button':
+      if (user_access('view addtoany')){
+        $block['subject'] = t('AddToAny');
+        $block['content'] = _addtoany_create_button(menu_get_object());
+      }
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implementation of hook_page_alter().  Would use drupal_add_js, but external scripts are not well supported
  *
  * @return
  *   String containing JavaScript code for the drop-down
  */
-function addtoany_footer($main = 0) {
-	global $_addtoany_script;
-	return $_addtoany_script;
+
+function addtoany_page_alter(&$page) {
+  global $_addtoany_script;
 }
 
 function _addtoany_create_script($node = NULL) {
@@ -113,7 +131,7 @@ function _addtoany_create_script($node = NULL) {
 	if(variable_get('addtoany_dropdown_disabled', '0')) return;
 	
 	if (is_object($node)) {
-	  	$link_name 	= check_plain($node->title);
+	  	$link_name 	= check_plain($node->title[LANGUAGE_NONE][0]['value']);
 		$link_url 	= url('node/'. $node->nid, array('absolute' => 1) );
 	} else { // Front page
 		$link_name 	= check_plain(variable_get('page_title_front', variable_get('site_name', '')));
@@ -137,8 +155,6 @@ function _addtoany_create_script($node = NULL) {
 	}
 	
 	$_addtoany_script_init = TRUE;
-	
-	return $_addtoany_script;
 }
 
 /**
@@ -159,8 +175,8 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 
   $disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
   
-  if (is_object($node)) {
-  	$link_name 	= rawurlencode($node->title);
+  if (is_object($node)) { 
+  	$link_name 	= rawurlencode($node->title[LANGUAGE_NONE][0]['value']);
 	$link_url 	= rawurlencode(url('node/'. $node->nid, array('absolute' => 1) ));
   } else { // Front page
 	$link_name 	= rawurlencode(variable_get('page_title_front', variable_get('site_name', '')));
