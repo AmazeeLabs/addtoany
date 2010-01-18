@@ -1,3 +1,4 @@
 ; $ID$
 name = AddToAny
-description = "Helps readers share, save, bookmark, and email your posts and pages using any service, such as Facebook, Twitter, Delicious, Digg, and over 100 more using the <a href="http://www.addtoany.com/" target="_blank">AddToAny</a> widget."
+description = "Helps readers share, save, bookmark, and email your posts and pages using any service, such as Facebook, Twitter, Delicious, Digg, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget."
+core = 6.x

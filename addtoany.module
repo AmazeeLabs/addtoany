@@ -18,129 +18,67 @@ function addtoany_perm() {
 /**
  * Implementation of hook_link().
  */
-function addtoany_link($type, $node=NULL, $teaser = FALSE) {
+function addtoany_link($type, $node = NULL, $teaser = FALSE) {
   $links = array();
 
-  if ($type === 'node' && user_access('view addtoany')) {
-    if (($teaser && variable_get('addtoany_display_in_teasers', '0')) ||
-      (!$teaser && variable_get('addtoany_display_in_links', '0'))) {
-      $links['addtoany'] = array(
-          'title' => _addtoany_create_button($node, $teaser),
-          'html' => TRUE,
-        );
-    }
+  $types = variable_get('addtoany_nodetypes', array());
+
+  $show  = (!empty($types[$node->type]) && 
+           (($teaser && variable_get('addtoany_display_in_teasers', '1')!=0) ||
+           (!$teaser && variable_get('addtoany_display_in_nodelink', '1')!=0)));
+           
+  if ($type === 'node' && $show && user_access('view addtoany')) {
+    $links['addtoany'] = array(
+        'title' => _addtoany_create_button($node, $teaser),
+        'html' => TRUE,
+      );
   }
 
   return $links;
 }
-/**
- * Implementation of hook_menu().
- */
-function addtoany_menu($may_cache) {
-  $items = array();
-  
-  if ($may_cache) {  
-	  $items[] = array(
-	  	'path'					=> 'admin/settings/addtoany',
-	    'title'            		=> t('AddToAny'),
-	    'description'      		=> t('Settings for your <a href="http://www.addtoany.com/" target="blank">AddToAny</a> Share/Save buttons.'),
-	    'callback'    			=> 'drupal_get_form',
-	    'callback arguments'   	=> array('addtoany_admin_settings'),
-	    'access' 				=> user_access('administer addthis'),
-	  );
-  }
 
-  return $items;
+/**
+ * Implementation of hook_nodeapi().
+ */
+function addtoany_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'view':
+      // Only show comments on the full non-teasered page
+      if (!$a3 && $a4) {
+        $types  = variable_get('addtoany_nodetypes', array());
+        
+        $show  = (!empty($types[$node->type]) && 
+                   variable_get('addtoany_display_in_nodecont', '0'));
+         
+        $weight = variable_get('addtoany_display_weight', 40);
+        
+        if ($show && user_access('view addtoany')) {
+          $node->content['addtoany'] = array(
+            '#value' => _addtoany_create_button($node, FALSE),
+            '#weight' => $weight,
+          );
+        }
+      }
+    break;
+  }
 }
 
 /**
- * Administration settings form.
- *
- * @return
- *   The completed form definition.
+ * Implementation of hook_menu().
  */
-function addtoany_admin_settings() {
-  $form = array();
+function addtoany_menu() {
+  $items = array();
 
-  global $base_path;
-  $button_img = '<img src="' . $base_path . drupal_get_path('module', 'addtoany') . '/images/%s" width="%d" height="%d" />';
-  
-  $button_options = array(
-  	'share_16_16.png|16|16'		=> sprintf($button_img, 'share_16_16.png', 16, 16),
-  	'share_save_171_16.png|171|16' => sprintf($button_img, 'share_save_171_16.png', 171, 16),
-  	'share_save_256_24.png|256|24' => sprintf($button_img, 'share_save_256_24.png', 256, 24),
-  	'custom'				=> 'Custom button',
-  );
-  
-  $form['addtoany_general_settings'] = array(
-    '#type'  => 'fieldset',
-    '#title' => t('General'),
-  );
-  $form['addtoany_general_settings']['addtoany_display_in_links'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Display on node pages'),
-    '#default_value' => variable_get('addtoany_display_in_links', '0'),
-    '#description'   => t('Display an addtoany button always on a node page\'s links section.'),
-  );
-  $form['addtoany_general_settings']['addtoany_display_in_teasers'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Display in node teasers'),
-    '#default_value' => variable_get('addtoany_display_in_teasers', '0'),
-    '#description'   => t('Display an addtoany button in the node teasers.'),
+  $items['admin/settings/addtoany'] = array(
+    'title'            => t('AddToAny'),
+    'description'      => t('Settings for your <a href="http://www.addtoany.com/" target="blank">AddToAny</a> Share/Save buttons.'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('addtoany_admin_settings'),
+    'access arguments' => array('administer addtoany'),
+    'file'             => 'addtoany.admin.inc',
   );
 
-  $form['addtoany_button_settings'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Button'),
-    '#collapsible'  => TRUE,
-    '#collapsed'    => FALSE,
-  );
-  $form['addtoany_button_settings']['addtoany_image'] = array(
-    '#type' 		 => 'radios',
-    '#title' 		 => t('Button'),
-    '#default_value' => variable_get('addtoany_image', 'share_save_171_16.png|171|16'),
-    '#options' 		 => $button_options,
-  );
-  $form['addtoany_button_settings']['addtoany_custom_image'] = array(
-    '#type'          => 'textfield',
-    '#title'         => t('Custom button URL'),
-    '#default_value' => variable_get('addtoany_custom_image', ''),
-    '#description'   => t('URL to the button image of your choosing. Example: http://example.com/share.png'),
-  );
-  $form['addtoany_button_settings']['addtoany_image_attributes'] = array(
-    '#type'          => 'textfield',
-    '#title'         => t('Button image HTML attributes'),
-    '#default_value' => variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
-    '#description'   => t('Extra HTML attributes for img tag. Example: alt=""'),
-  );
-  
-  $form['addtoany_additional_settings'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Additional options'),
-    '#collapsible'  => TRUE,
-    '#collapsed'    => TRUE,
-  );
-  $form['addtoany_additional_settings']['addtoany_additional_js'] = array(
-    '#type'          => 'textarea',
-    '#title'         => t('Additional script'),
-    '#default_value' => variable_get('addtoany_additional_js', ''),
-    '#description'   => t('You can set special JavaScript variables for each Share/Save menu. Advanced users might want to check out Add to Any\'s <a href="http://www.addtoany.com/buttons/api/">JavaScript API</a>.'),
-  );
-
-  $form['addtoany_widget_settings'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Drop-down menu'),
-    '#collapsible'  => TRUE,
-    '#collapsed'    => TRUE,
-  );
-  $form['addtoany_widget_settings']['addtoany_dropdown_disabled'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Disable dropdown'),
-    '#default_value' => variable_get('addtoany_dropdown_disabled', '0'),
-    '#description'   => t('You can disable the drop-down for selecting where to share your link and use a pop-up window instead.'),
-  );
-  
-  return system_settings_form($form);
+  return $items;
 }
 
 /**
@@ -152,15 +90,8 @@ function addtoany_block($op = 'list', $delta = 0) {
     return $blocks;
   }
   else if ($op == 'view' && user_access('view addtoany')) {
-  	// Get node object
-	$nodeid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : FALSE;
-	if ($nodeid) {
-		$node = node_load($nodeid);
-	} else {
-		$node = NULL;
-	}
     $block['subject'] = t('AddToAny');
-    $block['content'] = _addtoany_create_button($node);
+    $block['content'] = _addtoany_create_button(menu_get_object());
     return $block;
   }
 }
@@ -183,10 +114,10 @@ function _addtoany_create_script($node = NULL) {
 	
 	if (is_object($node)) {
 	  	$link_name 	= check_plain($node->title);
-		$link_url 	= url('node/'. $node->nid, NULL, NULL, TRUE);
+		$link_url 	= url('node/'. $node->nid, array('absolute' => 1) );
 	} else { // Front page
-		$link_name 	= check_plain(variable_get('site_name', 'Drupal'));
-	  	$link_url	= url('<front>', NULL, NULL, TRUE);
+		$link_name 	= check_plain(variable_get('page_title_front', variable_get('site_name', '')));
+	  	$link_url	= url('<front>', array('absolute' => 1));
 	}
 
 	global $_addtoany_script, $_addtoany_script_init;
@@ -227,14 +158,15 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
   _addtoany_create_script($node);
 
   $disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
-
+  
   if (is_object($node)) {
   	$link_name 	= rawurlencode($node->title);
-	$link_url 	= rawurlencode(url('node/'. $node->nid, NULL, NULL, TRUE));
+	$link_url 	= rawurlencode(url('node/'. $node->nid, array('absolute' => 1) ));
   } else { // Front page
-	$link_name 	= rawurlencode(variable_get('site_name', 'Drupal'));
-  	$link_url	= rawurlencode(url('<front>', NULL, NULL, TRUE));
+	$link_name 	= rawurlencode(variable_get('page_title_front', variable_get('site_name', '')));
+  	$link_url	= rawurlencode(url('<front>', array('absolute' => 1)));
   }
+  
   
   $button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
   

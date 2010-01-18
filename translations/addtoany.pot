@@ -1,0 +1,138 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  addtoany.admin.inc,v 1.1.2.2 2009/03/27 09:12:01 micropat
+#  addtoany.module,v 1.7.2.2 2009/03/27 09:12:01 micropat
+#  addtoany.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-04-09 11:20+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: addtoany.admin.inc:30
+msgid "General"
+msgstr ""
+
+#: addtoany.admin.inc:34
+msgid "Node Types"
+msgstr ""
+
+#: addtoany.admin.inc:35
+msgid "Display an AddToAny button for these node types."
+msgstr ""
+
+#: addtoany.admin.inc:41
+msgid "Display in node TEASERS"
+msgstr ""
+
+#: addtoany.admin.inc:43
+msgid "Display an AddToAny button in node teasers."
+msgstr ""
+
+#: addtoany.admin.inc:47
+msgid "Display in LINK section"
+msgstr ""
+
+#: addtoany.admin.inc:49
+msgid "Display an AddToAny button in LINK section of node pages."
+msgstr ""
+
+#: addtoany.admin.inc:53
+msgid "Display in CONTENT section"
+msgstr ""
+
+#: addtoany.admin.inc:55
+msgid "Display an AddToAny button in CONTENT section of node pages."
+msgstr ""
+
+#: addtoany.admin.inc:59
+msgid "Weight"
+msgstr ""
+
+#: addtoany.admin.inc:62
+msgid "Optional: WEIGHT value for AddToAny button displayed in CONTENT section"
+msgstr ""
+
+#: addtoany.admin.inc:67;73
+msgid "Button"
+msgstr ""
+
+#: addtoany.admin.inc:79
+msgid "Custom button URL"
+msgstr ""
+
+#: addtoany.admin.inc:81
+msgid "URL to the button image of your choosing. Example: http://example.com/share.png"
+msgstr ""
+
+#: addtoany.admin.inc:85
+msgid "Button image HTML attributes"
+msgstr ""
+
+#: addtoany.admin.inc:87
+msgid "Extra HTML attributes for img tag. Example: alt=\"\""
+msgstr ""
+
+#: addtoany.admin.inc:92
+msgid "Additional options"
+msgstr ""
+
+#: addtoany.admin.inc:98
+msgid "Additional script"
+msgstr ""
+
+#: addtoany.admin.inc:100
+msgid "You can set special JavaScript variables for each Share/Save menu. Advanced users might want to check out Add to Any's <a href=\"http://www.addtoany.com/buttons/api/\">JavaScript API</a>."
+msgstr ""
+
+#: addtoany.admin.inc:105
+msgid "Drop-down menu"
+msgstr ""
+
+#: addtoany.admin.inc:111
+msgid "Disable dropdown"
+msgstr ""
+
+#: addtoany.admin.inc:113
+msgid "You can disable the drop-down for selecting where to share your link and use a pop-up window instead."
+msgstr ""
+
+#: addtoany.module:73;93 addtoany.info:0
+msgid "AddToAny"
+msgstr ""
+
+#: addtoany.module:74
+msgid "Settings for your <a href=\"http://www.addtoany.com/\" target=\"blank\">AddToAny</a> Share/Save buttons."
+msgstr ""
+
+#: addtoany.module:89
+msgid "AddToAny button"
+msgstr ""
+
+#: addtoany.module:13
+msgid "administer addtoany"
+msgstr ""
+
+#: addtoany.module:14
+msgid "view addtoany"
+msgstr ""
+
+#: addtoany.module:0
+msgid "addtoany"
+msgstr ""
+
+#: addtoany.info:0
+msgid "Helps readers share, save, bookmark, and email your posts and pages using any service, such as Delicious, Digg, Facebook, Twitter, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget."
+msgstr ""
+

@@ -1,8 +1,9 @@
 .addtoany{
-	display:inline;
-	position:relative;
-	top:2px;
-
+  display:inline;
+}
+.addtoany img{
+  vertical-align: bottom;
+  margin-bottom: 2px;
 }
 .a2a_menu tbody{
 	border:0 !important;
