@@ -123,6 +123,7 @@ function addtoany_block_view($delta = 0) {
 
 function addtoany_page_alter(&$page) {
   global $_addtoany_script;
+  drupal_add_js($_addtoany_script, array('type' => 'inline', 'scope' => 'footer'));
 }
 
 function _addtoany_create_script($node = NULL) {
