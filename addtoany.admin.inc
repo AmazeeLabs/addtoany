@@ -80,7 +80,7 @@ function addtoany_admin_settings() {
     '#default_value' => variable_get('addtoany_custom_image', ''),
     '#description'   => t('URL to the button image of your choosing. Example: http://example.com/share.png'),
   );
-  $form['addtoany_button_settings']['addtoany_custom_image_attributes'] = array(
+  $form['addtoany_button_settings']['addtoany_image_attributes'] = array(
     '#type'          => 'textfield',
     '#title'         => t('Button image HTML attributes'),
     '#default_value' => variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
