@@ -53,6 +53,15 @@ function addtoany_node_view($node, $view_mode) {
   
 }
 
+/**
+ * Implementation of hook_views_api().
+ */
+function addtoany_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'addtoany') . '/views',
+  );
+}
 
 /**
  * Implementation of hook_menu().
