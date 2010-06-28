@@ -116,93 +116,102 @@ function addtoany_block_view($delta = 0) {
  */
 
 function addtoany_page_alter(&$page) {
-  global $_addtoany_script;
-  drupal_add_js($_addtoany_script, array('type' => 'inline', 'scope' => 'footer'));
+	global $_addtoany_script;
+	
+	$javascript = "da2a_html_ready = true;\n"
+		. "function da2a_init(){if(da2a_script_ready){\n"
+		. $_addtoany_script
+		. "}}";
+	
+	drupal_add_js($javascript, array('type' => 'inline', 'scope' => 'footer'));
 }
 
-function _addtoany_create_script($node = NULL) {
-
-	// Drop-down disabled?
-	if(variable_get('addtoany_dropdown_disabled', '0')) return;
-	
-	if (is_object($node)) {
-	  	$link_name 	= check_plain($node->title[LANGUAGE_NONE][0]['value']);
-		$link_url 	= url('node/'. $node->nid, array('absolute' => 1) );
-	} else { // Front page
-		$link_name 	= check_plain(variable_get('page_title_front', variable_get('site_name', '')));
-	  	$link_url	= url('<front>', array('absolute' => 1));
-	}
-
+/**
+ * Internal function to create asynchronous load JavaScript after first button, and create the on-ready JS for footer.
+ * 
+ * @param object $id_num
+ * @param object $link_name
+ * @param object $link_url
+ * @return 
+ *   String containing the asynchronous load JavaScript for the first button.
+ */
+function _addtoany_create_script($id_num, $link_name, $link_url) {
 	global $_addtoany_script, $_addtoany_script_init;
-	
-	if ( ! $_addtoany_script_init)
-		$_addtoany_script = '<script type="text/javascript">';
-	else
-		$_addtoany_script .= '<script type="text/javascript">';
 		
-	$_addtoany_script .= 'a2a_linkname="'. $link_name .'";a2a_linkurl="'. $link_url .'";';
+	$_addtoany_script .= "a2a_config.linkname='". check_plain($link_name)
+		. "'; a2a_config.linkurl='" . check_plain($link_url)
+		. "'; a2a.init('page', {target: '#da2a_" . $id_num . "'});\n";
 	
 	if ( ! $_addtoany_script_init) {
-		$_addtoany_script .= variable_get('addtoany_additional_js', '');
-		$_addtoany_script .= '</script><script type="text/javascript" src="http://static.addtoany.com/menu/page.js"></script>';
-	} else {
-		$_addtoany_script .= 'a2a_init("page");</script>';
+		$script_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://static.addtoany.com/menu/page.js' : 'http://static.addtoany.com/menu/page.js';
+		$javascript_async = "<script type=\"text/javascript\">\n"
+			. "function da2a_script_onready() { da2a_script_ready = true; if(da2a_html_ready) da2a_init(); }\n"
+			. "var a2a_config = a2a_config || {}, da2a_html_ready = da2a_script_ready = false; a2a_config.tracking_callback = ['ready', da2a_script_onready];"
+			. variable_get('addtoany_additional_js', '')
+			. "\n(function(){var a = document.createElement('script');a.type = 'text/javascript';a.async = true;a.src = '" . $script_url . "';var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(a, s);})();\n"			
+			. "</script>";
 	}
+	else
+		$javascript_async = "";
 	
 	$_addtoany_script_init = TRUE;
+	
+	return $javascript_async;
 }
 
 /**
  * Internal function to generate code for AddToAny button
  *
  * @return
- *   String containing html code for the button
+ *   String containing HTML code for the button
  */
 function _addtoany_create_button($node=NULL, $teaser = FALSE) {
-  global $_addtoany_counter, $base_path;
-  
-  $_addtoany_counter++;
-  if ($_addtoany_counter == 1) {
-      drupal_add_css((drupal_get_path('module', 'addtoany') .'/addtoany.css'));
-  }
-  
-  _addtoany_create_script($node);
+	global $_addtoany_counter, $base_path;
+	
+	$_addtoany_counter++;
+	if ($_addtoany_counter == 1) {
+		drupal_add_css((drupal_get_path('module', 'addtoany') .'/addtoany.css'));
+	}
+	
+	$disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
 
-  $disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
-  
-  if (is_object($node)) { 
-  	$link_name 	= rawurlencode($node->title[LANGUAGE_NONE][0]['value']);
-	$link_url 	= rawurlencode(url('node/'. $node->nid, array('absolute' => 1) ));
-  } else { // Front page
-	$link_name 	= rawurlencode(variable_get('page_title_front', variable_get('site_name', '')));
-  	$link_url	= rawurlencode(url('<front>', array('absolute' => 1)));
-  }
-  
-  
-  $button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
-  
-  if ($button_setting == "custom") {
-  	$button_image 		= variable_get('addtoany_custom_image', '');
-  	$button_width    	= '';
-	$button_height		= ''; 
-  } else {
-	  $button 			= explode('|', $button_setting);
-	  $button_filename 	= $button[0];
-	  $button_width    	= ' width="' . $button[1] . '"';
-	  $button_height	= ' height="' . $button[2] . '"';
-	  $button_image 	= $base_path . drupal_get_path('module', 'addtoany') . '/images/' . $button_filename;
-  }
-     
-  return ( sprintf('
-      <a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s"><img src="%s"%s%s %s/></a>
-      ',
-	  $disable_dropdown ? '' : ' class="a2a_dd"',
-	  $link_url,
-      $link_name,
-      $button_image,
-      $button_width,
-      $button_height,
-      variable_get('addtoany_image_attributes', 'alt="Share/Save"')
-  ));
+	if (is_object($node)) {
+	  	$link_name 	= (module_exists('page_title')) ? page_title_page_get_title() : $node->title;
+		$link_url 	= url('node/' . $node->nid, array('absolute' => 1));
+	} else { // Front page
+		$link_name	= (module_exists('page_title')) ? page_title_page_get_title() : variable_get('site_name', '');
+		$link_url = url('<front>', array('absolute' => 1));
+	}
+	
+	$javascript = ($disable_dropdown) ? '' : _addtoany_create_script($_addtoany_counter, $link_name, $link_url);
+	
+	$button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
+	
+	if ($button_setting == "custom") {
+		$button_image 		= variable_get('addtoany_custom_image', '');
+		$button_width    	= '';
+		$button_height		= ''; 
+	} else {
+		$button 			= explode('|', $button_setting);
+		$button_filename 	= $button[0];
+		$button_width    	= ' width="' . $button[1] . '"';
+		$button_height	= ' height="' . $button[2] . '"';
+		$button_image 	= $base_path . drupal_get_path('module', 'addtoany') . '/images/' . $button_filename;
+	}
+	 
+	return ( sprintf('
+		<a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s" id="da2a_%s"><img src="%s"%s%s %s/></a>
+		%s
+		',
+		$disable_dropdown ? '' : ' class="da2a_button"',
+		rawurlencode($link_url),
+		rawurlencode($link_name),
+		$_addtoany_counter,
+		$button_image,
+		$button_width,
+		$button_height,
+		variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
+		$javascript
+	));
 
 }
