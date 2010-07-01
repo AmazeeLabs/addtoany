@@ -127,10 +127,12 @@ function addtoany_block_view($delta = 0) {
 function addtoany_page_alter(&$page) {
 	global $_addtoany_script;
 	
-	$javascript = "da2a_html_ready = true;\n"
-		. "function da2a_init(){if(da2a_script_ready){\n"
+	$javascript = "da2a.init = function(){\n"
 		. $_addtoany_script
-		. "}}";
+		. "da2a.ready = true;\n"
+		. "}\n"
+		. "da2a.html_ready = true;\n"
+		. "if(da2a.script_ready && !da2a.ready)da2a.init();\n"; // Call a2a.init() if external script is ready, and if a2a.init() hasn't been called already
 	
 	drupal_add_js($javascript, array('type' => 'inline', 'scope' => 'footer'));
 }
@@ -154,8 +156,13 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
 	if ( ! $_addtoany_script_init) {
 		$script_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://static.addtoany.com/menu/page.js' : 'http://static.addtoany.com/menu/page.js';
 		$javascript_async = "<script type=\"text/javascript\">\n"
-			. "function da2a_script_onready() { da2a_script_ready = true; if(da2a_html_ready) da2a_init(); }\n"
-			. "var a2a_config = a2a_config || {}, da2a_html_ready = da2a_script_ready = false; a2a_config.tracking_callback = ['ready', da2a_script_onready];"
+			. "var a2a_config = a2a_config || {}, "
+				. "da2a = {ready: false, "
+				. "html_ready: false, "
+				. "script_ready: false, "
+				. "script_onready: function() { da2a.script_ready = true; if(da2a.html_ready)da2a.init(); }"
+			. "}; "
+			. "a2a_config.tracking_callback = ['ready', da2a.script_onready];"
 			. variable_get('addtoany_additional_js', '')
 			. "\n(function(){var a = document.createElement('script');a.type = 'text/javascript';a.async = true;a.src = '" . $script_url . "';var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(a, s);})();\n"			
 			. "</script>";
