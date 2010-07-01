@@ -178,6 +178,8 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
 /**
  * Internal function to generate code for AddToAny button
  *
+ * @param object $node [optional]
+ * @param object $teaser [optional]
  * @return
  *   String containing HTML code for the button
  */
