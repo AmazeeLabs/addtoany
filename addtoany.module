@@ -127,6 +127,10 @@ function addtoany_block_view($delta = 0) {
 function addtoany_page_alter(&$page) {
 	global $_addtoany_script;
 	
+	// Only output when needed (fixes http://drupal.org/node/843068)
+	if ( ! $_addtoany_script_init)
+		return;
+	
 	$javascript = "da2a.init = function(){\n"
 		. $_addtoany_script
 		. "da2a.ready = true;\n"
