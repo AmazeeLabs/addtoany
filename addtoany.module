@@ -125,7 +125,7 @@ function addtoany_block_view($delta = 0) {
  */
 
 function addtoany_page_alter(&$page) {
-	global $_addtoany_script;
+	global $_addtoany_script, $_addtoany_script_init;
 	
 	// Only output when needed (fixes http://drupal.org/node/843068)
 	if ( ! $_addtoany_script_init)
