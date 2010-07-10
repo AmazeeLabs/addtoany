@@ -22,7 +22,8 @@ function addtoany_admin_settings() {
     'share_16_16.png|16|16'    => sprintf($button_img, 'share_16_16.png', 16, 16),
     'share_save_171_16.png|171|16' => sprintf($button_img, 'share_save_171_16.png', 171, 16),
     'share_save_256_24.png|256|24' => sprintf($button_img, 'share_save_256_24.png', 256, 24),
-    'custom'        => 'Custom button',
+    'custom'        		=> 'Custom button',
+	'text'					=> 'Text only',
   );
 
   $form['addtoany_general_settings'] = array(
@@ -85,6 +86,12 @@ function addtoany_admin_settings() {
     '#title'         => t('Button image HTML attributes'),
     '#default_value' => variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
     '#description'   => t('Extra HTML attributes for img tag. Example: alt=""'),
+  );
+  $form['addtoany_button_settings']['addtoany_link_text'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Link text'),
+    '#default_value' => variable_get('addtoany_link_text', ''),
+    '#description'   => t('Text for the AddToAny button link. Example: Share'),
   );
 
   $form['addtoany_additional_settings'] = array(

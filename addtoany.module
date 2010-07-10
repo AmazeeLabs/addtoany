@@ -215,26 +215,35 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 		$button_image 		= variable_get('addtoany_custom_image', '');
 		$button_width    	= '';
 		$button_height		= ''; 
-	} else {
+	} elseif ($button_setting != "text") {
 		$button 			= explode('|', $button_setting);
 		$button_filename 	= $button[0];
 		$button_width    	= ' width="' . $button[1] . '"';
 		$button_height	= ' height="' . $button[2] . '"';
 		$button_image 	= $base_path . drupal_get_path('module', 'addtoany') . '/images/' . $button_filename;
 	}
+	
+	$button_text = variable_get('addtoany_link_text', '');
+	if (strlen($button_text) > 0)
+		$button_text = ' ' . $button_text; 
+	
+	$button_innerHTML = ($button_setting == "text") ? $button_text : sprintf('<img src="%s"%s%s %s/>%s',
+		$button_image,
+		$button_width,
+		$button_height,
+		variable_get('addtoany_image_attributes', 'alt="Share this"'),
+		$button_text
+	);
 	 
 	return ( sprintf('
-		<a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s" id="da2a_%s"><img src="%s"%s%s %s/></a>
+		<a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s" id="da2a_%s">%s</a>
 		%s
 		',
 		$disable_dropdown ? '' : ' class="da2a_button"',
 		rawurlencode($link_url),
 		rawurlencode($link_name),
 		$_addtoany_counter,
-		$button_image,
-		$button_width,
-		$button_height,
-		variable_get('addtoany_image_attributes', 'alt="Share/Save"'),
+		$button_innerHTML,
 		$javascript
 	));
 
