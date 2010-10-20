@@ -34,7 +34,7 @@ function addtoany_admin_settings() {
     '#type'          => 'checkboxes',
     '#title'         => t('Node types'),
     '#description'   => t('Display an AddToAny button for these node types.'),
-    '#default_value' => variable_get('addtoany_nodetypes', array('page', 'story')),
+    '#default_value' => variable_get('addtoany_nodetypes', array('page', 'article')),
     '#options'       => node_type_get_names(),
   );
   $form['addtoany_general_settings']['addtoany_display_in_teasers'] = array(

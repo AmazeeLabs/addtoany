@@ -24,21 +24,16 @@ function addtoany_permission() {
 function addtoany_node_view($node, $view_mode) { 
   $links = array();
   $types = variable_get('addtoany_nodetypes', array());
-  $teaser = $view_mode == 'teaser' ? TRUE : FALSE;
+  $teaser = ($view_mode == 'teaser') ? TRUE : FALSE;
   $show  = (!empty($types[$node->type]) && 
            (($teaser && variable_get('addtoany_display_in_teasers', '1')!=0) ||
            (!$teaser && variable_get('addtoany_display_in_nodelink', '1')!=0)));
            
   if ($show) {
-    $links['addtoany'] = array(
-      'title' => _addtoany_create_button($node, $teaser),
-      'html' => TRUE,
-    );
-    $node->content['links']['addtoany'] = array(
-      '#theme' => 'links',
-      '#links' => $links,
-      '#attributes' => array('class' => array('links', 'inline')),
-    );
+	$node->content['links']['#links']['addtoany'] = array(
+        'title' => _addtoany_create_button($node, $teaser),
+        'html' => TRUE,
+      );
   }
   
   $show  = (!empty($types[$node->type]) && variable_get('addtoany_display_in_nodecont', '0'));
@@ -46,7 +41,7 @@ function addtoany_node_view($node, $view_mode) {
       
   if ($show) {
     $node->content['addtoany'] = array(
-      '#value' => _addtoany_create_button($node, FALSE),
+      '#markup' => _addtoany_create_button($node, FALSE),
       '#weight' => $weight,
     );
   }
@@ -69,7 +64,7 @@ function addtoany_views_api() {
 function addtoany_menu() {
   $items = array();
 
-  $items['admin/settings/addtoany'] = array(
+  $items['admin/config/system/addtoany'] = array(
     'title'            => t('AddToAny'),
     'description'      => t('Settings for your <a href="http://www.addtoany.com/" target="blank">AddToAny</a> Share/Save buttons.'),
     'page callback'    => 'drupal_get_form',
@@ -236,12 +231,10 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	);
 	 
 	return ( sprintf('
-		<a%s href="http://www.addtoany.com/share_save?linkurl=%s&amp;linkname=%s" id="da2a_%s">%s</a>
+		<a%s href="http://www.addtoany.com/share_save" id="da2a_%s">%s</a>
 		%s
 		',
 		$disable_dropdown ? '' : ' class="da2a_button"',
-		rawurlencode($link_url),
-		rawurlencode($link_name),
 		$_addtoany_counter,
 		$button_innerHTML,
 		$javascript
