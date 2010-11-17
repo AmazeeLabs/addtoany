@@ -198,7 +198,7 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	  	$link_name 	= (module_exists('page_title')) ? page_title_page_get_title() : $node->title;
 		$link_url 	= url('node/' . $node->nid, array('absolute' => 1));
 	} else { // Front page
-		$link_name	= (module_exists('page_title')) ? page_title_page_get_title() : variable_get('site_name', '');
+		$link_name	= (module_exists('page_title')) ? page_title_page_get_title() : variable_get('site_name', 'Drupal');
 		$link_url = url('<front>', array('absolute' => 1));
 	}
 	
@@ -207,7 +207,7 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	$button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
 	
 	if ($button_setting == "custom") {
-		$button_image 		= variable_get('addtoany_custom_image', '');
+		$button_image 		= check_url(variable_get('addtoany_custom_image', ''));
 		$button_width    	= '';
 		$button_height		= ''; 
 	} elseif ($button_setting != "text") {
@@ -218,7 +218,7 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 		$button_image 	= $base_path . drupal_get_path('module', 'addtoany') . '/images/' . $button_filename;
 	}
 	
-	$button_text = variable_get('addtoany_link_text', '');
+	$button_text = check_plain(variable_get('addtoany_link_text', ''));
 	if (strlen($button_text) > 0)
 		$button_text = ' ' . $button_text; 
 	
@@ -226,7 +226,7 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 		$button_image,
 		$button_width,
 		$button_height,
-		variable_get('addtoany_image_attributes', 'alt="Share this"'),
+		filter_xss(variable_get('addtoany_image_attributes', 'alt="Share this"'), array()),
 		$button_text
 	);
 	 
