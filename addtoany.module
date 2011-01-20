@@ -7,6 +7,15 @@
  */
 
 /**
+ * Implements hook_install().
+ */
+function addtoany_install() {
+  drupal_set_message(st("Your AddToAny settings are available under !link", 
+    array( '!link' => l('Configuration > System > AddToAny ',  'admin/config/system/addtoany' ) )
+  ));
+}
+
+/**
  * Implementation of hook_permission().
  */
 function addtoany_permission() {

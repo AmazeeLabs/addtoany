@@ -14,26 +14,11 @@ function addtoany_views_data() {
   $data['node']['addtoany_link'] = array(
     'title' => t('AddToAny link'),
     'help' => t('Link provided by the AddToAny module'),
+    'group' => t('Node'),
     'field' => array(
       'handler' => 'addtoany_handler_field_addtoany_link',
       'click sortable' => FALSE,
     )
   );
   return $data;
-}
-
-/**
- * Implementation of hook_views_handlers().
- */
-function addtoany_views_handlers() {
-  return array(
-    'info' => array(
-      'path' => drupal_get_path('module', 'addtoany') . '/views',
-    ),
-    'handlers' => array(
-      'addtoany_handler_field_addtoany_link' => array(
-        'parent' => 'views_handler_field_node_link',
-      ),
-    ),
-  );
 }

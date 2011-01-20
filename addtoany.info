@@ -1,8 +1,11 @@
 ; $ID$
 name = AddToAny
-description = "Helps readers share, bookmark, and email your posts and pages using any service, such as Facebook, Twitter, Delicious, Digg, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget."
+description = "Helps readers share, bookmark, and email your articles and pages using any service, such as Facebook, Twitter, Delicious, Digg, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget."
 core = 7.x
 
 files[] = addtoany.module
 files[] = addtoany.css
 files[] = addtoany.admin.inc
+files[] = views/addtoany_handler_field_addtoany_link.inc
+files[] = views/addtoany.views.inc
+configure = admin/config/system/addtoany
