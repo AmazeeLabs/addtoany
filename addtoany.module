@@ -121,7 +121,7 @@ function addtoany_block_view($delta = 0) {
 }
 
 /**
- * Implementation of hook_page_alter().  Would use drupal_add_js, but external scripts are not well supported
+ * Implementation of hook_page_alter().
  *
  * @return
  *   String containing JavaScript code for asynchronous loading of AddToAny's external script.
