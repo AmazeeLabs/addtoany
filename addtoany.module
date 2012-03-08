@@ -265,10 +265,12 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	);
 	 
 	return ( sprintf('
-		<a%s href="http://www.addtoany.com/share_save" id="da2a_%s">%s</a>
+		<a%s href="http://www.addtoany.com/share_save#url=%s&amp;title=%s" id="da2a_%s">%s</a>
 		%s
 		',
 		$disable_dropdown ? '' : ' class="da2a_button"',
+		rawurlencode($link_url),
+		rawurlencode($link_name),
 		$_addtoany_counter,
 		$button_innerHTML,
 		$javascript
