@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Stand alone module file to handle AddToAny button integration
+ * Stand alone module file to handle AddToAny buttons integration
  */
 
 /**
@@ -88,7 +88,7 @@ function addtoany_menu() {
  * Implements hook_block_info().
  */
 function addtoany_block_info() {
-  $blocks['addtoany_button']['info'] = t('AddToAny button');
+  $blocks['addtoany_button']['info'] = t('AddToAny buttons');
   return $blocks;
 }
 
@@ -97,7 +97,7 @@ function addtoany_block_info() {
  */
 function addtoany_block_list() {
   $blocks['addtoany_button'] = array(
-    'info'       => t('AddToAny button'),
+    'info'       => t('AddToAny buttons'),
     'status'     => TRUE,
     'weight'     => 0,
     'visibility' => 1,
@@ -172,20 +172,20 @@ function addtoany_page_alter(&$page) {
 		. "];\n"
 		. "da2a.html_done=true;"
 		. "if(da2a.script_ready&&!da2a.done)da2a.init();" // External script may load before html_done=true, but will only init if html_done=true.  So call da2a.init() if external script is ready, and if da2a.init() hasn't been called already.  Otherwise, wait for callback to call da2a.init()
-		. "da2a.script_load();"; // Load external script if not already called with the first AddToAny button.  Fixes issues where first button code is processed internally but without actual code output 
+		. "da2a.script_load();"; // Load external script if not already called with the first AddToAny instance.  Fixes issues where first instance code is processed internally but without actual code output 
 	
 	drupal_add_js($javascript_header, array('type' => 'inline', 'scope' => 'header'));
 	drupal_add_js($javascript_footer, array('type' => 'inline', 'scope' => 'footer'));
 }
 
 /**
- * Internal function to call the async script loading function right after the first AddToAny button, to utilize concurrent downloading and increase overall page-load performance.
+ * Internal function to call the async script loading function right after the first AddToAny instance, to utilize concurrent downloading and increase overall page-load performance.
  * 
  * @param object $id_num
  * @param object $link_name
  * @param object $link_url
  * @return 
- *   String containing a JavaScript function call for asynchronous script loading right after the first button.
+ *   String containing a JavaScript function call for asynchronous script loading right after the first instance.
  */
 function _addtoany_create_script($id_num, $link_name, $link_url) {
 	global $_addtoany_targets, $_addtoany_init;
@@ -211,12 +211,12 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
 }
 
 /**
- * Internal function to generate code for AddToAny button
+ * Internal function to generate code for AddToAny buttons
  *
  * @param object $node [optional]
  * @param object $teaser [optional]
  * @return
- *   String containing HTML code for the button
+ *   String containing HTML code for the buttons
  */
 function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	global $_addtoany_counter, $base_path;

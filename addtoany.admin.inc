@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Administration settings for AddToAny button integration
+ * Administration settings for AddToAny buttons integration
  */
 
 /**
@@ -32,7 +32,7 @@ function addtoany_admin_settings() {
   $form['addtoany_general_settings']['addtoany_nodetypes'] = array(
     '#type'          => 'checkboxes',
     '#title'         => t('Node types'),
-    '#description'   => t('Display an AddToAny button for these node types.'),
+    '#description'   => t('Display buttons for these node types.'),
     '#default_value' => variable_get('addtoany_nodetypes', array('page', 'article')),
     '#options'       => node_type_get_names(),
   );
@@ -40,26 +40,26 @@ function addtoany_admin_settings() {
     '#type'          => 'checkbox',
     '#title'         => t('Display in node TEASERS'),
     '#default_value' => variable_get('addtoany_display_in_teasers', '1'),
-    '#description'   => t('Display an AddToAny button in node teasers.'),
+    '#description'   => t('Display buttons in node teasers.'),
   );
   $form['addtoany_general_settings']['addtoany_display_in_nodelink'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Display in LINK section'),
     '#default_value' => variable_get('addtoany_display_in_nodelink', '1'),
-    '#description'   => t('Display an AddToAny button in LINK section of node pages.'),
+    '#description'   => t('Display buttons in LINK section of node pages.'),
   );
   $form['addtoany_general_settings']['addtoany_display_in_nodecont'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Display in CONTENT section'),
     '#default_value' => variable_get('addtoany_display_in_nodecont', '0'),
-    '#description'   => t('Display an AddToAny button in CONTENT section of node pages.'),
+    '#description'   => t('Display buttons in CONTENT section of node pages.'),
   );
   $form['addtoany_general_settings']['addtoany_display_weight'] = array(
     '#type'          => 'weight',
     '#title'         => t('Weight'),
     '#default_value' => variable_get('addtoany_display_weight', 40),
     '#delta'         => 50,
-    '#description'   => t('Optional: WEIGHT value for AddToAny button displayed in CONTENT section'),
+    '#description'   => t('Optional: WEIGHT value for buttons displayed in CONTENT section'),
   );
 
   $form['addtoany_button_settings'] = array(
@@ -90,7 +90,7 @@ function addtoany_admin_settings() {
     '#type'          => 'textfield',
     '#title'         => t('Link text'),
     '#default_value' => variable_get('addtoany_link_text', ''),
-    '#description'   => t('Text for the AddToAny button link. Example: Share'),
+    '#description'   => t('Text for the universal sharing button link. Example: Share'),
   );
 
   $form['addtoany_additional_settings'] = array(
