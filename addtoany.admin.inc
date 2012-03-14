@@ -101,10 +101,26 @@ function addtoany_admin_settings() {
   );
   $form['addtoany_additional_settings']['addtoany_additional_js'] = array(
     '#type'          => 'textarea',
-    '#title'         => t('Additional script'),
+    '#title'         => t('Additional JavaScript'),
     '#default_value' => variable_get('addtoany_additional_js', ''),
     '#description'   => t('You can set special JavaScript variables for each Share/Save menu. Advanced users might want to check out AddToAny\'s <a href="http://www.addtoany.com/buttons/api/">JavaScript API</a> and <a href="http://www.addtoany.com/buttons/customize/">documentation</a>.'),
   );
+  $form['addtoany_additional_settings']['addtoany_additional_html'] = array(
+    '#type'          => 'textarea',
+    '#title'         => t('Additional HTML'),
+    '#default_value' => variable_get('addtoany_additional_html', ''),
+    '#description'   => t('You can add HTML code to display customized <a href="http://www.addtoany.com/buttons/customize/standalone_services">standalone services</a> next to each universal sharing button. For example: <br /> <code>&lt;a class=&quot;a2a_button_facebook&quot;&gt;&lt;/a&gt;<br />&lt;a class=&quot;a2a_button_twitter&quot;&gt;&lt;/a&gt;</code>
+    '),
+  );
+   $form['addtoany_additional_settings']['addtoany_additional_html_placement'] = array(
+    '#type'          => 'radios',
+    '#title'         => t('Additional HTML placement'),
+    '#default_value' => variable_get('addtoany_additional_html_placement', 'before'),
+    '#options'       => array(
+	    'before' => t('Before the universal sharing button'),
+	    'after' => t('After the universal sharing button'),
+	),
+   );
 
   $form['addtoany_widget_settings'] = array(
     '#type'         => 'fieldset',
