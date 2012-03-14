@@ -227,6 +227,8 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	}
 	
 	$disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
+	$additional_html = variable_get('addtoany_additional_html', '');
+	$additional_html_placement = variable_get('addtoany_additional_html_placement', 'before');
 
 	if (is_object($node)) {
 	  	$link_name 	= (module_exists('page_title')) ? page_title_page_get_title() : $node->title;
@@ -265,14 +267,18 @@ function _addtoany_create_button($node=NULL, $teaser = FALSE) {
 	);
 	 
 	return ( sprintf('
-		<a%s href="http://www.addtoany.com/share_save#url=%s&amp;title=%s" id="da2a_%s">%s</a>
+		<span class="a2a_kit a2a_target addtoany_list" id="da2a_%s">
+			%s<a%s href="http://www.addtoany.com/share_save#url=%s&amp;title=%s">%s</a>%s
+		</span>
 		%s
 		',
-		$disable_dropdown ? '' : ' class="da2a_button"',
+		$_addtoany_counter,
+		($additional_html_placement == 'before') ? $additional_html : '',
+		$disable_dropdown ? ' class="addtoany_share_save"' : ' class="a2a_dd addtoany_share_save"',
 		rawurlencode($link_url),
 		rawurlencode($link_name),
-		$_addtoany_counter,
 		$button_innerHTML,
+		($additional_html_placement == 'after') ? $additional_html : '',
 		$javascript
 	));
 
