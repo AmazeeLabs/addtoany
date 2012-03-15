@@ -29,7 +29,7 @@ function addtoany_admin_settings() {
     '#type'  => 'fieldset',
     '#title' => t('Placement'),
     '#collapsible'  => TRUE,
-    '#collapsed'    => TRUE,
+    '#collapsed'    => FALSE,
   );
   $form['addtoany_placement_settings']['addtoany_nodetypes'] = array(
     '#type'          => 'checkboxes',
@@ -66,7 +66,7 @@ function addtoany_admin_settings() {
 
   $form['addtoany_button_settings'] = array(
     '#type'         => 'fieldset',
-    '#title'        => t('Button'),
+    '#title'        => t('Universal Button'),
     '#collapsible'  => TRUE,
     '#collapsed'    => TRUE,
   );
