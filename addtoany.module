@@ -226,7 +226,6 @@ function _addtoany_create_button($node=NULL) {
 		drupal_add_css((drupal_get_path('module', 'addtoany') .'/addtoany.css'));
 	}
 	
-	$disable_dropdown = variable_get('addtoany_dropdown_disabled', '0');
 	$additional_html = variable_get('addtoany_additional_html', '');
 	$additional_html_placement = variable_get('addtoany_additional_html_placement', 'before');
 
@@ -238,7 +237,7 @@ function _addtoany_create_button($node=NULL) {
 		$link_url = url('<front>', array('absolute' => 1));
 	}
 	
-	$javascript = ($disable_dropdown) ? '' : _addtoany_create_script($_addtoany_counter, $link_name, $link_url);
+	$javascript = _addtoany_create_script($_addtoany_counter, $link_name, $link_url);
 	
 	$button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
 	
@@ -274,7 +273,7 @@ function _addtoany_create_button($node=NULL) {
 		',
 		$_addtoany_counter,
 		($additional_html_placement == 'before') ? $additional_html : '',
-		$disable_dropdown ? ' class="addtoany_share_save"' : ' class="a2a_dd addtoany_share_save"',
+		' class="a2a_dd addtoany_share_save"',
 		rawurlencode($link_url),
 		rawurlencode($link_name),
 		$button_innerHTML,

@@ -25,36 +25,38 @@ function addtoany_admin_settings() {
 	'text'					=> 'Text only',
   );
 
-  $form['addtoany_general_settings'] = array(
+  $form['addtoany_placement_settings'] = array(
     '#type'  => 'fieldset',
-    '#title' => t('General'),
+    '#title' => t('Placement'),
+    '#collapsible'  => TRUE,
+    '#collapsed'    => TRUE,
   );
-  $form['addtoany_general_settings']['addtoany_nodetypes'] = array(
+  $form['addtoany_placement_settings']['addtoany_nodetypes'] = array(
     '#type'          => 'checkboxes',
     '#title'         => t('Node types'),
     '#description'   => t('Display buttons for these node types.'),
     '#default_value' => variable_get('addtoany_nodetypes', array('page', 'article')),
     '#options'       => node_type_get_names(),
   );
-  $form['addtoany_general_settings']['addtoany_display_in_teasers'] = array(
+  $form['addtoany_placement_settings']['addtoany_display_in_teasers'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Display in node TEASERS'),
     '#default_value' => variable_get('addtoany_display_in_teasers', '1'),
     '#description'   => t('Display buttons in node teasers.'),
   );
-  $form['addtoany_general_settings']['addtoany_display_in_nodelink'] = array(
+  $form['addtoany_placement_settings']['addtoany_display_in_nodelink'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Display in LINK section'),
     '#default_value' => variable_get('addtoany_display_in_nodelink', '1'),
     '#description'   => t('Display buttons in LINK section of node pages.'),
   );
-  $form['addtoany_general_settings']['addtoany_display_in_nodecont'] = array(
+  $form['addtoany_placement_settings']['addtoany_display_in_nodecont'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Display in CONTENT section'),
     '#default_value' => variable_get('addtoany_display_in_nodecont', '0'),
     '#description'   => t('Display buttons in CONTENT section of node pages.'),
   );
-  $form['addtoany_general_settings']['addtoany_display_weight'] = array(
+  $form['addtoany_placement_settings']['addtoany_display_weight'] = array(
     '#type'          => 'weight',
     '#title'         => t('Weight'),
     '#default_value' => variable_get('addtoany_display_weight', 40),
@@ -66,7 +68,7 @@ function addtoany_admin_settings() {
     '#type'         => 'fieldset',
     '#title'        => t('Button'),
     '#collapsible'  => TRUE,
-    '#collapsed'    => FALSE,
+    '#collapsed'    => TRUE,
   );
   $form['addtoany_button_settings']['addtoany_image'] = array(
     '#type'      => 'radios',
@@ -121,19 +123,6 @@ function addtoany_admin_settings() {
 	    'after' => t('After the universal sharing button'),
 	),
    );
-
-  $form['addtoany_widget_settings'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Drop-down menu'),
-    '#collapsible'  => TRUE,
-    '#collapsed'    => TRUE,
-  );
-  $form['addtoany_widget_settings']['addtoany_dropdown_disabled'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Disable dropdown'),
-    '#default_value' => variable_get('addtoany_dropdown_disabled', '0'),
-    '#description'   => t('You can disable the drop-down for selecting where to share your link and use a pop-up window instead.'),
-  );
 
   return system_settings_form($form);
 }
