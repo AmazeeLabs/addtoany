@@ -1,9 +1,8 @@
 name = AddToAny
-description = Helps readers share, bookmark, and email your articles and pages using any service, such as Facebook, Twitter, Google+, StumbleUpon, and over 100 more using the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> widget.
+description = Share buttons by AddToAny, including the AddToAny universal sharing button, Facebook, Twitter, Google+, Pinterest, and over 100 more on the <a href='http://www.addtoany.com/' target='_blank'>AddToAny</a> platform.
 core = 7.x
 
 files[] = addtoany.module
-files[] = addtoany.css
 files[] = addtoany.admin.inc
 files[] = views/addtoany_handler_field_addtoany_link.inc
 files[] = views/addtoany.views.inc
