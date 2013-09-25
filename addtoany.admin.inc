@@ -125,28 +125,41 @@ function addtoany_admin_settings() {
   );
   $form['addtoany_placement_settings']['addtoany_display_in_teasers'] = array(
     '#type'          => 'checkbox',
-    '#title'         => t('Display in node TEASERS'),
+    '#title'         => t('Display for node <strong>teasers</strong>'),
     '#default_value' => variable_get('addtoany_display_in_teasers', '1'),
-    '#description'   => t('Display buttons in node teasers.'),
+    '#description'   => t('Display buttons for node <strong>teasers</strong> in selected sections.'),
+    '#states'        => array(
+      // Disable if no section placement is selected
+      'disabled' => array(
+        ':input[name="addtoany_display_in_nodecont"]' => array('checked' => FALSE),
+        ':input[name="addtoany_display_in_nodelink"]' => array('checked' => FALSE),
+      ),
+    ),
   );
   $form['addtoany_placement_settings']['addtoany_display_in_nodelink'] = array(
     '#type'          => 'checkbox',
-    '#title'         => t('Display in LINK section'),
+    '#title'         => t('Display in <strong>link</strong> section'),
     '#default_value' => variable_get('addtoany_display_in_nodelink', '1'),
-    '#description'   => t('Display buttons in LINK section of node pages.'),
+    '#description'   => t('Display buttons in the <strong>link</strong> section of node pages.'),
   );
   $form['addtoany_placement_settings']['addtoany_display_in_nodecont'] = array(
     '#type'          => 'checkbox',
-    '#title'         => t('Display in CONTENT section'),
+    '#title'         => t('Display in <strong>content</strong> section'),
     '#default_value' => variable_get('addtoany_display_in_nodecont', '0'),
-    '#description'   => t('Display buttons in CONTENT section of node pages.'),
+    '#description'   => t('Display buttons in the <strong>content</strong> section of node pages.'),
   );
   $form['addtoany_placement_settings']['addtoany_display_weight'] = array(
     '#type'          => 'weight',
-    '#title'         => t('Weight'),
+    '#title'         => t('Content weight'),
     '#default_value' => variable_get('addtoany_display_weight', 40),
     '#delta'         => 50,
-    '#description'   => t('Optional: WEIGHT value for buttons displayed in CONTENT section'),
+    '#description'   => t('Optional weight value for buttons displayed in the <strong>content</strong> section.'),
+    '#states'        => array(
+      // Show only if placement in "content" selected
+      'visible' => array(
+        ':input[name="addtoany_display_in_nodecont"]' => array('checked' => TRUE),
+      ),
+    ),
   );
 
   $form['addtoany_additional_settings'] = array(
