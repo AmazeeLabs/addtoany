@@ -41,10 +41,10 @@ function addtoany_node_view($node, $view_mode) {
   );
            
   if ($show) {
-	$node->content['links']['#links']['addtoany'] = array(
-        'title' => _addtoany_create_button($node),
-        'html' => TRUE,
-      );
+    $node->content['links']['#links']['addtoany'] = array(
+      'title' => _addtoany_create_button($node),
+      'html' => TRUE,
+    );
   }
   
   // Display in content section?
