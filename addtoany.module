@@ -288,9 +288,9 @@ function _addtoany_create_button($node=NULL) {
   if (is_object($node)) {
     $link_name 	= (module_exists('page_title')) ? page_title_page_get_title() : $node->title;
     $link_url 	= url('node/' . $node->nid, array('absolute' => 1));
-  } else { // Front page
-    $link_name	= (module_exists('page_title')) ? page_title_page_get_title() : variable_get('site_name', 'Drupal');
-    $link_url = url('<front>', array('absolute' => 1));
+  } else { // Current page
+    $link_name	= (module_exists('page_title')) ? page_title_page_get_title() : drupal_get_title();
+    $link_url = url(current_path(), array('absolute' => 1));
   }
   
   $javascript = _addtoany_create_script(  $_addtoany_num, $link_name, $link_url);
