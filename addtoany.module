@@ -180,7 +180,8 @@ function addtoany_page_alter(&$page) {
           . "da2a.targets=[];" // Empty targets array so AJAX can reuse from index 0
         . "}"
       . "};"
-      . "a2a_config.tracking_callback=['ready',da2a.script_onready];"
+      . "a2a_config.callbacks=a2a_config.callbacks||[];"
+      . "a2a_config.callbacks.push({ready:da2a.script_onready});"
       . ((variable_get('addtoany_no_3p', '0') != '1') ? "" : "a2a_config.no_3p=1;")
       . variable_get('addtoany_additional_js', '');
   
@@ -228,7 +229,7 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
 	// If doing AJAX
 	if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 		$javascript_button_config = "<script type=\"text/javascript\">"
-			. "da2a.targets.push("
+			. "if(da2a.targets)da2a.targets.push("
 				. $button_config
 			. ");";
 		
