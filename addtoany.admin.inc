@@ -148,6 +148,12 @@ function addtoany_admin_settings() {
     '#default_value' => variable_get('addtoany_display_in_nodecont', '0'),
     '#description'   => t('Display buttons in the <strong>content</strong> section of node pages.'),
   );
+  $form['addtoany_placement_settings']['addtoany_display_in_rss'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Display in <strong>RSS</strong> feed'),
+    '#default_value' => variable_get('addtoany_display_in_rss', '1'),
+    '#description'   => t('Display buttons in the RSS feed.'),
+  );
   $form['addtoany_placement_settings']['addtoany_display_weight'] = array(
     '#type'          => 'weight',
     '#title'         => t('Content weight'),
