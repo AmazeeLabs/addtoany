@@ -300,6 +300,10 @@ function _addtoany_create_button($node=NULL, $values=NULL) {
   } elseif (is_object($node)) {
     $link_name 	= (module_exists('page_title')) ? page_title_page_get_title() : $node->title;
     $link_url 	= url('node/' . $node->nid, array('absolute' => 1));
+  // Otherwise, if front page, use best URL/Title for front page
+  } elseif (drupal_is_front_page()) {
+    $link_name	= (module_exists('page_title')) ? page_title_page_get_title() : variable_get('site_name', 'Drupal');
+    $link_url = url('<front>', array('absolute' => 1));
   // Otherwise, use current page's URL/Title
   } else {
     $link_name	= (module_exists('page_title')) ? page_title_page_get_title() : drupal_get_title();
