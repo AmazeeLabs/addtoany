@@ -264,7 +264,7 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
 	if ( ! $_addtoany_init) {
 		$javascript_load_early = "<script type=\"text/javascript\">\n"
 			. "<!--//--><![CDATA[//><!--\n"
-			. "da2a.script_load();\n"
+			. "if(da2a)da2a.script_load();\n"
 			. "//--><!]]>\n"
 			. "</script>";
 	}
