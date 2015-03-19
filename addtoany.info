@@ -4,6 +4,7 @@ core = 7.x
 
 files[] = addtoany.module
 files[] = addtoany.admin.inc
+files[] = addtoany.variable.inc
 files[] = views/addtoany_handler_field_addtoany_link.inc
 files[] = views/addtoany.views.inc
 configure = admin/config/system/addtoany
