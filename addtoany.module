@@ -210,6 +210,14 @@ function addtoany_page_alter(&$page) {
     'scope' => 'footer',
     'type'  => 'inline',
   );
+
+  /**
+   * Custom CSS Setting
+   */
+  $css = variable_get('addtoany_additional_css', '');
+  if(!empty($css)) {
+    drupal_add_css($css, 'inline');
+  }
 }
 
 /**
