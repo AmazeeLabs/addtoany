@@ -103,7 +103,10 @@ function addtoany_menu() {
  * Implements hook_block_info().
  */
 function addtoany_block_info() {
-  $blocks['addtoany_button']['info'] = t('AddToAny buttons');
+  $blocks['addtoany_button'] = array(
+    'info' => t('AddToAny buttons'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
