@@ -170,10 +170,8 @@ function addtoany_page_alter(&$page) {
           . "da2a.script_load=function(){};"
         . "},"
         . "script_onready:function(){"
-          . "if(a2a.type=='page'){" // Check a2a internal var to ensure script loaded is page.js not feed.js
-            . "da2a.script_ready=true;"
-            . "if(da2a.html_done)da2a.init();"
-          . "}"
+          . "da2a.script_ready=true;"
+          . "if(da2a.html_done)da2a.init();"
         . "},"
         . "init:function(){"
           . "for(var i=0,el,target,targets=da2a.targets,length=targets.length;i<length;i++){"
