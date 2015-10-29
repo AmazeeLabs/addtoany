@@ -237,8 +237,8 @@ function _addtoany_create_script($id_num, $link_name, $link_url) {
   	$_addtoany_targets = array();
 	}
 
-	$button_config = "\n{title:'". $link_name . "',"
-		. "url:'" . $link_url . "'}";
+	$button_config = "\n{title:". drupal_json_encode($link_name) . ","
+		. "url:" . drupal_json_encode($link_url) . "}";
 
 	$_addtoany_targets[] = $button_config;
 
@@ -344,10 +344,6 @@ function addtoany_create_buttons($url = NULL, $title = NULL) {
     else {
       $title = module_exists('page_title') ? page_title_page_get_title() : drupal_get_title();
     }
-  }
-  else {
-    // Sanitize and encode title for HTML output.
-    $title = check_plain($title);
   }
 
   // Set the link name.
