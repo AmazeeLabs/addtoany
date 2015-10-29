@@ -392,7 +392,7 @@ function addtoany_create_buttons($url = NULL, $title = NULL) {
       $button_text
     );
 
-    $universal_button = sprintf('<a%s href="https://www.addtoany.com/share_save#url=%s&amp;title=%s">%s</a>',
+    $universal_button = sprintf('<a%s href="https://www.addtoany.com/share#url=%s&amp;title=%s">%s</a>',
       ' class="a2a_dd addtoany_share_save"',
       rawurlencode($link_url),
       rawurlencode($link_name),
