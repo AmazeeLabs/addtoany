@@ -353,12 +353,12 @@ function addtoany_create_buttons($url = NULL, $title = NULL) {
 
   $javascript = _addtoany_create_script($_addtoany_num, $link_name, $link_url);
 
-  $buttons_size = variable_get('addtoany_buttons_size', '16');
+  $buttons_size = variable_get('addtoany_buttons_size', '32');
   // Must be a 3 digit positive integer.
   $buttons_size = (
-      $buttons_size !== '16' && strlen($buttons_size) <= 3 && $buttons_size !== ''
+      $buttons_size !== '32' && strlen($buttons_size) <= 3 && $buttons_size !== ''
       && is_numeric($buttons_size) && intval($buttons_size) == $buttons_size && $buttons_size > 0
-    ) ? $buttons_size : '16';
+    ) ? $buttons_size : '32';
 
   $button_setting = variable_get('addtoany_image', 'share_save_171_16.png|171|16');
 

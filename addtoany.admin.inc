@@ -43,11 +43,12 @@ function addtoany_admin_settings() {
     '#type'          => 'textfield',
     '#title'         => t('Icon size'),
     '#field_suffix'  => ' ' . t('pixels'),
-    '#default_value' => variable_get('addtoany_buttons_size', '16'),
+    '#default_value' => variable_get('addtoany_buttons_size', '32'),
     '#size'          => 10,
     '#maxlength'     => 3,
-    '#element_validate' => array('element_validate_number'),
+    '#element_validate' => array('element_validate_integer_positive'),
     '#description'   => t('AddToAny\'s large SVG icons are mobile ready, pixel perfect on high DPI or retina displays, and revert to PNG in older browsers.'),
+    '#required'      => TRUE
   );
   $form['addtoany_button_settings']['addtoany_service_button_settings'] = array(
     '#type'         => 'fieldset',
