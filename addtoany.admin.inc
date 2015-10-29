@@ -40,13 +40,13 @@ function addtoany_admin_settings() {
     '#collapsed'    => FALSE,
   );
   $form['addtoany_button_settings']['addtoany_buttons_size'] = array(
-    '#type'          => 'radios',
+    '#type'          => 'textfield',
     '#title'         => t('Icon size'),
+    '#field_suffix'  => ' ' . t('pixels'),
     '#default_value' => variable_get('addtoany_buttons_size', '16'),
-    '#options'       => array(
-      '32' => t('Large (32 x 32 pixels, SVG format, modern)'),
-      '16' => t('Small (16 x 16 pixels, PNG format, traditional)'),
-    ),
+    '#size'          => 10,
+    '#maxlength'     => 3,
+    '#element_validate' => array('element_validate_number'),
     '#description'   => t('AddToAny\'s large SVG icons are mobile ready, pixel perfect on high DPI or retina displays, and revert to PNG in older browsers.'),
   );
   $form['addtoany_button_settings']['addtoany_service_button_settings'] = array(
