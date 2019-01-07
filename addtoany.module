@@ -336,6 +336,9 @@ function addtoany_create_buttons($url = NULL, $title = NULL) {
   // Make an absolute link URL out of whatever URL/path we have been given.
   $link_url = url($url, array('absolute' => TRUE));
 
+  // Allow modules to alter the URL.
+  drupal_alter('addtoany_button_url', $link_name, $link_url);
+
   $buttons_size = variable_get('addtoany_buttons_size', '32');
   // Must be a 3 digit positive integer.
   $buttons_size = (
